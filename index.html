@@ -2,183 +2,184 @@
 <html>
 <head>
 <meta charset="utf-8">
+<title>R&D EVSE OKR Tracker</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#07090f;color:#e2e8f0;font-family:'Inter',system-ui,sans-serif;font-size:13px;min-height:100vh}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:99px}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #07090f; color: #e2e8f0; font-family: 'Inter', system-ui, sans-serif; font-size: 13px; min-height: 100vh; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 99px; }
 
-.header{background:#07090f;border-bottom:1px solid rgba(255,255,255,.06);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
-.brand{display:flex;align-items:center;gap:10px}
-.brand-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#06b6d4,#6366f1);display:flex;align-items:center;justify-content:center}
-.brand-icon svg{width:16px;height:16px;fill:#fff}
-.brand-text{font-size:13px;font-weight:700;letter-spacing:-.3px;color:#fff;line-height:1.1}
-.brand-sub{font-size:10px;color:#64748b}
-.search-wrap{position:relative;flex:1;max-width:220px}
-.search-wrap input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:6px 10px 6px 30px;font-size:11px;color:#cbd5e1;outline:none}
-.search-wrap input::placeholder{color:#475569}
-.search-wrap input:focus{border-color:rgba(6,182,212,.3)}
-.search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#475569;font-size:13px;pointer-events:none}
+.header { background: #07090f; border-bottom: 1px solid rgba(255,255,255,.06); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; position: sticky; top: 0; z-index: 100; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg,#06b6d4,#6366f1); display: flex; align-items: center; justify-content: center; }
+.brand-icon svg { width: 16px; height: 16px; fill: #fff; }
+.brand-text { font-size: 13px; font-weight: 700; letter-spacing: -.3px; color: #fff; line-height: 1.1; }
+.brand-sub { font-size: 10px; color: #64748b; }
+.header-actions { display: flex; align-items: center; gap: 12px; }
 
-.tabs{background:#07090f;border-bottom:1px solid rgba(255,255,255,.06);padding:0 20px;display:flex;gap:2px}
-.tab{padding:9px 14px;font-size:11px;font-weight:600;color:#64748b;cursor:pointer;border:none;background:none;position:relative;transition:color .15s}
-.tab:hover{color:#94a3b8}
-.tab.active{color:#fff}
-.tab.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#06b6d4,#6366f1);border-radius:2px 2px 0 0}
+.unlock-btn { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.unlock-btn:hover { background: rgba(255,255,255,.1); color: #fff; }
+.unlock-btn.unlocked { background: rgba(34,197,94,.15); color: #4ade80; border-color: rgba(34,197,94,.3); }
 
-.toolbar{padding:12px 20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.filter-sel{appearance:none;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:5px 28px 5px 10px;font-size:11px;color:#cbd5e1;cursor:pointer;outline:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
-.filter-sel option{background:#1e293b}
-.reset-btn{font-size:11px;color:#64748b;background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
-.reset-btn:hover{color:#fff}
+.search-wrap { position: relative; flex: 1; max-width: 220px; }
+.search-wrap input { width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.07); border-radius: 10px; padding: 6px 10px 6px 30px; font-size: 11px; color: #cbd5e1; outline: none; }
+.search-wrap input::placeholder { color: #475569; }
+.search-wrap input:focus { border-color: rgba(6,182,212,.3); }
+.search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 13px; pointer-events: none; }
 
-.main{padding:16px 20px;display:flex;flex-direction:column;gap:16px}
+.tabs { background: #07090f; border-bottom: 1px solid rgba(255,255,255,.06); padding: 0 20px; display: flex; gap: 2px; }
+.tab { padding: 9px 14px; font-size: 11px; font-weight: 600; color: #64748b; cursor: pointer; border: none; background: none; position: relative; transition: color .15s; }
+.tab:hover { color: #94a3b8; }
+.tab.active { color: #fff; }
+.tab.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg,#06b6d4,#6366f1); border-radius: 2px 2px 0 0; }
+
+.toolbar { padding: 12px 20px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.filter-sel { appearance: none; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.07); border-radius: 10px; padding: 5px 28px 5px 10px; font-size: 11px; color: #cbd5e1; cursor: pointer; outline: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; }
+.filter-sel option { background: #1e293b; }
+.reset-btn { font-size: 11px; color: #64748b; background: none; border: none; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.reset-btn:hover { color: #fff; }
+
+.main { padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; }
 
 /* Metric cards */
-.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.metric-card{background:#0d1320;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:16px;position:relative;overflow:hidden;cursor:default}
-.metric-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2.5px}
-.mc-cyan::after{background:linear-gradient(90deg,#06b6d4,#3b82f6)}
-.mc-violet::after{background:linear-gradient(90deg,#8b5cf6,#ec4899)}
-.mc-green::after{background:linear-gradient(90deg,#22c55e,#10b981)}
-.mc-amber::after{background:linear-gradient(90deg,#f59e0b,#ef4444)}
-.metric-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:10px}
-.metric-value{font-size:36px;font-weight:900;letter-spacing:-1.5px;line-height:1}
-.mc-cyan .metric-value{color:#22d3ee}
-.mc-violet .metric-value{color:#a78bfa}
-.mc-green .metric-value{color:#4ade80}
-.mc-amber .metric-value{color:#fbbf24}
-.metric-sub{font-size:10px;color:#475569;margin-top:6px}
+.metric-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.metric-card { background: #0d1320; border: 1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 16px; position: relative; overflow: hidden; cursor: default; }
+.metric-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2.5px; }
+.mc-cyan::after { background: linear-gradient(90deg,#06b6d4,#3b82f6); }
+.mc-violet::after { background: linear-gradient(90deg,#8b5cf6,#ec4899); }
+.mc-green::after { background: linear-gradient(90deg,#22c55e,#10b981); }
+.mc-amber::after { background: linear-gradient(90deg,#f59e0b,#ef4444); }
+.metric-label { font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #64748b; margin-bottom: 10px; }
+.metric-value { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; line-height: 1; }
+.mc-cyan .metric-value { color: #22d3ee; }
+.mc-violet .metric-value { color: #a78bfa; }
+.mc-green .metric-value { color: #4ade80; }
+.mc-amber .metric-value { color: #fbbf24; }
+.metric-sub { font-size: 10px; color: #475569; margin-top: 6px; }
 
 /* Middle row */
-.mid-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.panel{background:#0d1320;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:16px}
-.panel-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
-.panel-sub{font-size:10px;color:#475569;margin-bottom:14px}
+.mid-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.panel { background: #0d1320; border: 1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 16px; }
+.panel-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.panel-sub { font-size: 10px; color: #475569; margin-bottom: 14px; }
 
 /* Donut */
-.donut-wrap{display:flex;align-items:center;gap:16px}
-.donut-svg-wrap{position:relative;width:110px;height:110px;flex-shrink:0}
-.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.donut-total{font-size:20px;font-weight:900;color:#fff}
-.donut-label{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.06em}
-.legend-row{display:flex;flex-direction:column;gap:10px;flex:1}
-.leg-item{display:flex;flex-direction:column;gap:4px}
-.leg-top{display:flex;justify-content:space-between;align-items:center}
-.leg-name{font-size:10px;color:#94a3b8}
-.leg-val{font-size:11px;font-weight:700}
-.leg-bar{height:4px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden}
-.leg-fill{height:100%;border-radius:4px;transition:width .8s ease}
+.donut-wrap { display: flex; align-items: center; gap: 16px; }
+.donut-svg-wrap { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
+.donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.donut-total { font-size: 20px; font-weight: 900; color: #fff; }
+.donut-label { font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: .06em; }
+.legend-row { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.leg-item { display: flex; flex-direction: column; gap: 4px; }
+.leg-top { display: flex; justify-content: space-between; align-items: center; }
+.leg-name { font-size: 10px; color: #94a3b8; }
+.leg-val { font-size: 11px; font-weight: 700; }
+.leg-bar { height: 4px; border-radius: 4px; background: rgba(255,255,255,.06); overflow: hidden; }
+.leg-fill { height: 100%; border-radius: 4px; transition: width .8s ease; }
 
 /* Category bars */
-.cat-row{display:flex;flex-direction:column;gap:12px}
-.cat-item{display:flex;flex-direction:column;gap:5px}
-.cat-top{display:flex;justify-content:space-between;align-items:center}
-.cat-left{display:flex;align-items:center;gap:7px;font-size:11px;color:#94a3b8}
-.cat-dot{width:8px;height:8px;border-radius:50%}
-.cat-right{display:flex;align-items:center;gap:10px}
-.cat-krs{font-size:10px;color:#475569}
-.cat-wt{font-size:11px;font-weight:700}
-.cat-bar-bg{height:4px;border-radius:4px;background:rgba(255,255,255,.06)}
-.cat-bar-fill{height:100%;border-radius:4px}
+.cat-row { display: flex; flex-direction: column; gap: 12px; }
+.cat-item { display: flex; flex-direction: column; gap: 5px; }
+.cat-top { display: flex; justify-content: space-between; align-items: center; }
+.cat-left { display: flex; align-items: center; gap: 7px; font-size: 11px; color: #94a3b8; }
+.cat-dot { width: 8px; height: 8px; border-radius: 50%; }
+.cat-right { display: flex; align-items: center; gap: 10px; }
+.cat-krs { font-size: 10px; color: #475569; }
+.cat-wt { font-size: 11px; font-weight: 700; }
+.cat-bar-bg { height: 4px; border-radius: 4px; background: rgba(255,255,255,.06); }
+.cat-bar-fill { height: 100%; border-radius: 4px; }
 
 /* Milestones */
-.milestone-list{display:flex;flex-direction:column;gap:6px}
-.milestone-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:default}
-.milestone-item:hover{background:rgba(255,255,255,.055)}
-.ms-left{flex:1;min-width:0}
-.ms-kr{font-size:10px;font-weight:700;color:#22d3ee}
-.ms-title{font-size:10px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ms-date{font-size:9px;color:#334155}
-.ms-days{font-size:13px;font-weight:900;text-align:right}
-.ms-urgent{color:#f87171}
-.ms-warn{color:#fbbf24}
-.ms-ok{color:#22d3ee}
+.milestone-list { display: flex; flex-direction: column; gap: 6px; }
+.milestone-item { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.05); border-radius: 10px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: default; }
+.milestone-item:hover { background: rgba(255,255,255,.055); }
+.ms-left { flex: 1; min-width: 0; }
+.ms-kr { font-size: 10px; font-weight: 700; color: #22d3ee; }
+.ms-title { font-size: 10px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ms-date { font-size: 9px; color: #334155; }
+.ms-days { font-size: 13px; font-weight: 900; text-align: right; }
+.ms-urgent { color: #f87171; }
+.ms-warn { color: #fbbf24; }
+.ms-ok { color: #22d3ee; }
 
 /* KR section heading */
-.section-head{margin-bottom:10px}
-.section-title{font-size:14px;font-weight:700;color:#fff}
-.section-sub{font-size:10px;color:#475569;margin-top:2px}
+.section-head { margin-bottom: 10px; }
+.section-title { font-size: 14px; font-weight: 700; color: #fff; }
+.section-sub { font-size: 10px; color: #475569; margin-top: 2px; }
 
 /* KR cards */
-.kr-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.kr-card{background:#0d1320;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px;cursor:pointer;transition:background .15s,border-color .15s;text-align:left;width:100%}
-.kr-card:hover{background:#111827;border-color:rgba(255,255,255,.1)}
-.kr-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.kr-no{font-size:10px;font-weight:700}
-.status-badge{font-size:8px;font-weight:700;padding:2px 6px;border-radius:99px;border-width:1px;border-style:solid}
-.sb-completed{background:rgba(34,197,94,.12);color:#4ade80;border-color:rgba(34,197,94,.2)}
-.sb-inprogress{background:rgba(245,158,11,.12);color:#fbbf24;border-color:rgba(245,158,11,.2)}
-.sb-tobestarted{background:rgba(99,102,241,.12);color:#818cf8;border-color:rgba(99,102,241,.2)}
-.kr-title{font-size:10px;color:#94a3b8;line-height:1.4;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.kr-pct{font-size:26px;font-weight:900;color:#fff;letter-spacing:-1px}
-.kr-done{font-size:9px;color:#475569}
-.kr-prog-bg{height:4px;border-radius:4px;background:rgba(255,255,255,.06);margin-top:6px}
-.kr-prog-fill{height:100%;border-radius:4px;transition:width .8s ease}
-
-/* All KRs grid */
-.kr-all-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kr-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+.kr-card { background: #0d1320; border: 1px solid rgba(255,255,255,.06); border-radius: 12px; padding: 12px; cursor: pointer; transition: background .15s,border-color .15s; text-align: left; width: 100%; }
+.kr-card:hover { background: #111827; border-color: rgba(255,255,255,.1); }
+.kr-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.kr-no { font-size: 10px; font-weight: 700; }
+.status-badge { font-size: 8px; font-weight: 700; padding: 2px 6px; border-radius: 99px; border-width: 1px; border-style: solid; display: inline-block; }
+.sb-completed { background: rgba(34,197,94,.12); color: #4ade80; border-color: rgba(34,197,94,.2); }
+.sb-inprogress { background: rgba(245,158,11,.12); color: #fbbf24; border-color: rgba(245,158,11,.2); }
+.sb-tobestarted { background: rgba(99,102,241,.12); color: #818cf8; border-color: rgba(99,102,241,.2); }
+.kr-title { font-size: 10px; color: #94a3b8; line-height: 1.4; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.kr-pct { font-size: 26px; font-weight: 900; color: #fff; letter-spacing: -1px; }
+.kr-done { font-size: 9px; color: #475569; }
+.kr-prog-bg { height: 4px; border-radius: 4px; background: rgba(255,255,255,.06); margin-top: 6px; }
+.kr-prog-fill { height: 100%; border-radius: 4px; transition: width .8s ease; }
 
 /* Actions table */
-.actions-table{background:#0d1320;border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden}
-.actions-table table{width:100%;border-collapse:collapse;font-size:11px}
-.actions-table th{padding:10px 14px;text-align:left;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#475569;border-bottom:1px solid rgba(255,255,255,.06)}
-.actions-table td{padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle}
-.actions-table tr:last-child td{border-bottom:none}
-.actions-table tr:hover td{background:rgba(255,255,255,.015)}
-.td-kr{font-weight:700;color:#22d3ee;white-space:nowrap}
-.td-title{color:#94a3b8;max-width:220px}
-.td-title span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.td-cat{color:#64748b;white-space:nowrap;font-size:10px}
-.td-date{color:#64748b;white-space:nowrap;font-size:10px}
-.td-wt{color:#94a3b8;font-size:10px}
+.actions-table { background: #0d1320; border: 1px solid rgba(255,255,255,.06); border-radius: 14px; overflow: hidden; }
+.actions-table table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.actions-table th { padding: 10px 14px; text-align: left; font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #475569; border-bottom: 1px solid rgba(255,255,255,.06); }
+.actions-table td { padding: 8px 14px; border-bottom: 1px solid rgba(255,255,255,.03); vertical-align: middle; }
+.actions-table tr:hover td { background: rgba(255,255,255,.015); }
+.td-kr { font-weight: 700; color: #22d3ee; white-space: nowrap; }
+.td-title { color: #94a3b8; max-width: 220px; }
+.td-title span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.td-cat { color: #64748b; white-space: nowrap; font-size: 10px; }
+.td-date { color: #64748b; white-space: nowrap; font-size: 10px; }
+.td-wt { color: #94a3b8; font-size: 10px; }
+
+select.edit-select { background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,.2); border-radius: 4px; padding: 2px 4px; font-size: 10px; outline: none; }
 
 /* Timeline chart */
-.chart-panel{background:#0d1320;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:16px}
-.timeline-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.tl-card{background:#0d1320;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px}
-.tl-card:hover{background:#111827}
-.tl-left{flex:1;min-width:0}
-.tl-kr{font-size:10px;font-weight:700;color:#22d3ee}
-.tl-title{font-size:10px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tl-cat{font-size:9px;color:#334155}
-.tl-right{text-align:right;flex-shrink:0}
-.tl-date{font-size:10px;font-weight:700;color:#fff}
-.tl-status{font-size:9px}
+.chart-panel { background: #0d1320; border: 1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 16px; }
+.timeline-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 12px; }
+.tl-card { background: #0d1320; border: 1px solid rgba(255,255,255,.06); border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
+.tl-card:hover { background: #111827; }
+.tl-left { flex: 1; min-width: 0; }
+.tl-kr { font-size: 10px; font-weight: 700; color: #22d3ee; }
+.tl-title { font-size: 10px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-cat { font-size: 9px; color: #334155; }
+.tl-right { text-align: right; flex-shrink: 0; }
+.tl-date { font-size: 10px; font-weight: 700; color: #fff; }
+.tl-status { font-size: 9px; }
 
 /* Modal */
-.modal-backdrop{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.65)}
-.modal-panel{position:fixed;top:0;right:0;bottom:0;z-index:201;width:380px;background:#07090f;border-left:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;overflow:hidden}
-.modal-header{padding:16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:flex-start;gap:10px}
-.modal-header-text{flex:1;min-width:0}
-.modal-kr-no{font-size:10px;font-weight:700;margin-bottom:4px}
-.modal-kr-title{font-size:12px;font-weight:700;color:#fff;line-height:1.4}
-.modal-kr-meta{font-size:10px;color:#64748b;margin-top:3px}
-.modal-close{background:none;border:none;cursor:pointer;color:#475569;font-size:18px;line-height:1;padding:2px}
-.modal-close:hover{color:#fff}
-.modal-prog{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
-.modal-prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.modal-prog-label{font-size:10px;color:#64748b}
-.modal-prog-val{font-size:16px;font-weight:900;color:#fff}
-.modal-prog-bg{height:6px;border-radius:6px;background:rgba(255,255,255,.06)}
-.modal-prog-fill{height:100%;border-radius:6px;transition:width .8s ease}
-.modal-body{flex:1;overflow-y:auto;padding:12px 16px}
-.modal-actions-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#475569;margin-bottom:8px}
-.action-row{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.action-icon{flex-shrink:0;font-size:14px}
-.ai-completed{color:#4ade80}
-.ai-inprogress{color:#fbbf24}
-.ai-tobestarted{color:#818cf8}
-.action-info{flex:1;min-width:0}
-.action-name{font-size:10px;font-weight:600;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.action-meta{font-size:9px;color:#475569;margin-top:2px}
+.modal-backdrop { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.65); }
+.modal-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 201; width: 380px; background: #07090f; border-left: 1px solid rgba(255,255,255,.07); display: flex; flex-direction: column; overflow: hidden; }
+.modal-header { padding: 16px; border-bottom: 1px solid rgba(255,255,255,.06); display: flex; align-items: flex-start; gap: 10px; }
+.modal-header-text { flex: 1; min-width: 0; }
+.modal-kr-no { font-size: 10px; font-weight: 700; margin-bottom: 4px; }
+.modal-kr-title { font-size: 12px; font-weight: 700; color: #fff; line-height: 1.4; }
+.modal-kr-meta { font-size: 10px; color: #64748b; margin-top: 3px; }
+.modal-close { background: none; border: none; cursor: pointer; color: #475569; font-size: 18px; line-height: 1; padding: 2px; }
+.modal-close:hover { color: #fff; }
+.modal-prog { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,.06); }
+.modal-prog-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.modal-prog-label { font-size: 10px; color: #64748b; }
+.modal-prog-val { font-size: 16px; font-weight: 900; color: #fff; }
+.modal-prog-bg { height: 6px; border-radius: 6px; background: rgba(255,255,255,.06); }
+.modal-prog-fill { height: 100%; border-radius: 6px; transition: width .8s ease; }
+.modal-body { flex: 1; overflow-y: auto; padding: 12px 16px; }
+.modal-actions-label { font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #475569; margin-bottom: 8px; }
+.action-row { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.05); border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.action-icon { flex-shrink: 0; font-size: 14px; }
+.ai-completed { color: #4ade80; }
+.ai-inprogress { color: #fbbf24; }
+.ai-tobestarted { color: #818cf8; }
+.action-info { flex: 1; min-width: 0; }
+.action-name { font-size: 10px; font-weight: 600; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.action-meta { font-size: 9px; color: #475569; margin-top: 2px; }
 
-.empty-state{padding:40px;text-align:center;color:#334155;font-size:12px}
-
-/* editable: highlight editable numbers */
-.editable{cursor:text;border-bottom:1px dashed rgba(255,255,255,.12)}
-.editable:focus{outline:none;border-bottom-color:#22d3ee}
+.empty-state { padding: 40px; text-align: center; color: #334155; font-size: 12px; }
 </style>
 </head>
 <body>
@@ -191,9 +192,12 @@ body{background:#07090f;color:#e2e8f0;font-family:'Inter',system-ui,sans-serif;f
       <div class="brand-sub">FY 2026–27 · Owner: PM Singh</div>
     </div>
   </div>
-  <div class="search-wrap">
-    <span class="search-icon">⌕</span>
-    <input type="text" id="searchInput" placeholder="Search KRs or actions…">
+  <div class="header-actions">
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="searchInput" placeholder="Search KRs or actions…">
+    </div>
+    <button id="unlockBtn" class="unlock-btn" onclick="toggleEditing()">🔒 Unlock Editing</button>
   </div>
 </div>
 
@@ -213,7 +217,7 @@ body{background:#07090f;color:#e2e8f0;font-family:'Inter',system-ui,sans-serif;f
     <option value="Process">Process</option>
   </select>
   <select class="filter-sel" id="statusFilter">
-    <option value="All">All Status</option>
+    <option value="All">All Statuses</option>
     <option value="In-Progress">In-Progress</option>
     <option value="To be Started">To be Started</option>
     <option value="Completed">Completed</option>
@@ -245,182 +249,202 @@ body{background:#07090f;color:#e2e8f0;font-family:'Inter',system-ui,sans-serif;f
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+<!-- APPLICATION SCRIPT & FIREBASE INTEGRATION -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  // ==========================================
+  // 1. YOUR FIREBASE CONFIGURATION
+  // REPLACE THIS BLOCK WITH YOUR DETAILS FROM FIREBASE CONSOLE
+  // ==========================================
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "your-project.firebaseapp.com",
+    databaseURL: "https://your-project-default-rtdb.firebaseio.com", // MUST BE INCLUDED
+    projectId: "your-project",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const dbRef = ref(db, 'okr_data');
+
+  // ==========================================
+  // 2. DATA AND AUTHENTICATION STATE
+  // ==========================================
+  window.isEditingUnlocked = false;
+  
+  // This is the fallback data if the database is empty
+  window.KRS = [
+    {krNo:'KR 1.1',title:'EVT (Engineering Validation Samples) of SPIN Gen 2.0',target:'2 Samples',weight:0.20,status:'In-Progress',dueDate:'2027-01-31',category:'Product Delivery',actions:[
+      {id:'A-01',title:'Architecture Development (Document Readiness)',status:'In-Progress',weight:0.08,dueDate:'2026-06-01'},
+      {id:'A-02',title:'Design & CFT - A',status:'To be Started',weight:0.15,dueDate:'2026-07-01'},
+      {id:'A-03',title:'Proto Assembly',status:'To be Started',weight:0.15,dueDate:'2026-09-01'},
+      {id:'A-04',title:'Proto Validation',status:'To be Started',weight:0.15,dueDate:'2026-11-01'},
+      {id:'A-05',title:'CFT - B',status:'To be Started',weight:0.15,dueDate:'2026-12-01'},
+      {id:'A-06',title:'System Release',status:'To be Started',weight:0.15,dueDate:'2026-12-01'},
+      {id:'A-07',title:'Field Trial',status:'To be Started',weight:0.10,dueDate:'2027-01-01'},
+    ]},
+    {krNo:'KR 1.2',title:'Upgrade Gen 2.0 to Gen 2.5 across all power categories',target:'2 Samples + System Release',weight:0.10,status:'In-Progress',dueDate:'2026-07-30',category:'Product Delivery',actions:[
+      {id:'A-01',title:'Upgrade point identification',status:'In-Progress',weight:0.08,dueDate:'2026-05-01'},
+      {id:'A-02',title:'Design & CFT - A',status:'To be Started',weight:0.15,dueDate:'2026-06-01'},
+      {id:'A-03',title:'Proto Assembly',status:'To be Started',weight:0.15,dueDate:'2026-05-01'},
+      {id:'A-04',title:'Proto Validation',status:'To be Started',weight:0.15,dueDate:'2026-06-01'},
+      {id:'A-05',title:'CFT - B',status:'To be Started',weight:0.15,dueDate:'2026-06-01'},
+      {id:'A-06',title:'System Release',status:'To be Started',weight:0.15,dueDate:'2026-07-01'},
+      {id:'A-07',title:'Field Trial',status:'To be Started',weight:0.10,dueDate:'2026-07-01'},
+    ]},
+    {krNo:'KR 1.3',title:"Build India's best Gen 3.0 all-in-1 EV charger (120–360kW)",target:'3 Samples',weight:0.25,status:'In-Progress',dueDate:'2026-10-30',category:'Product Delivery',actions:[
+      {id:'A-01',title:'Architecture Development (Document Readiness)',status:'In-Progress',weight:0.08,dueDate:'2026-06-01'},
+      {id:'A-02',title:'Design & CFT - A',status:'To be Started',weight:0.15,dueDate:'2026-06-01'},
+      {id:'A-03',title:'Proto Assembly',status:'To be Started',weight:0.15,dueDate:'2026-07-31'},
+      {id:'A-04',title:'Proto Validation',status:'To be Started',weight:0.15,dueDate:'2026-08-31'},
+      {id:'A-05',title:'CFT - B',status:'To be Started',weight:0.15,dueDate:'2026-08-31'},
+      {id:'A-06',title:'System Release',status:'To be Started',weight:0.15,dueDate:'2026-08-31'},
+      {id:'A-07',title:'Field Trial',status:'To be Started',weight:0.10,dueDate:'2026-10-01'},
+    ]},
+    {krNo:'KR 1.4',title:'480kW Distributed System Release',target:'2 Samples + System Release',weight:0.15,status:'In-Progress',dueDate:'2026-07-31',category:'Product Delivery',actions:[
+      {id:'A-01',title:'Architecture Development (Document Readiness)',status:'Completed',weight:0.15,dueDate:'2026-05-01'},
+      {id:'A-02',title:'Design & CFT - A',status:'Completed',weight:0.15,dueDate:'2026-06-01'},
+      {id:'A-03',title:'Proto Assembly',status:'In-Progress',weight:0.08,dueDate:'2026-06-01'},
+      {id:'A-04',title:'Proto Validation',status:'To be Started',weight:0.15,dueDate:'2026-06-01'},
+      {id:'A-05',title:'CFT - B',status:'To be Started',weight:0.15,dueDate:'2026-07-01'},
+      {id:'A-06',title:'System Release',status:'To be Started',weight:0.15,dueDate:'2026-07-01'},
+      {id:'A-07',title:'Field Trial',status:'To be Started',weight:0.10,dueDate:'2026-07-31'},
+    ]},
+    {krNo:'KR 2.1',title:'Upgrade DC chargers in the field to latest HW/SW/IP issues',target:'50/Month',weight:0.01,status:'In-Progress',dueDate:'2026-05-31',category:'Quality',actions:[
+      {id:'A-01',title:'DC Charger field audit',status:'In-Progress',weight:0.30,dueDate:'2026-05-31'},
+      {id:'A-02',title:'HW/SW upgrade rollout — Batch 1',status:'To be Started',weight:0.40,dueDate:'2026-06-30'},
+      {id:'A-03',title:'Verification & sign-off',status:'To be Started',weight:0.30,dueDate:'2026-07-31'},
+    ]}
+  ];
+
+  // ==========================================
+  // 3. FIREBASE SYNC FUNCTIONS
+  // ==========================================
+  async function loadInitialData() {
+    try {
+      const snapshot = await get(dbRef);
+      if (snapshot.exists()) {
+        window.KRS = snapshot.val().krs;
+      } else {
+        await set(dbRef, { krs: window.KRS });
+      }
+      if(window.render) window.render();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  window.syncWithDatabase = async function() {
+    if (!window.isEditingUnlocked) return;
+    try {
+      await set(dbRef, { krs: window.KRS });
+      console.log("Database updated successfully!");
+    } catch (error) {
+      alert("Failed to save to database. Check console.");
+      console.error(error);
+    }
+  };
+
+  // Start the load
+  loadInitialData();
+</script>
+
+<!-- UI LOGIC SCRIPT -->
 <script>
-const CAT_COLORS = {
-  'Product Delivery':'#22d3ee',
-  'Quality':'#a855f7',
-  'Production Efficiency':'#f59e0b',
-  'Process':'#22c55e'
+const CAT_COLORS = { 'Product Delivery':'#22d3ee', 'Quality':'#a855f7', 'Production Efficiency':'#f59e0b', 'Process':'#22c55e' };
+let currentTab = 'overview';
+let chartInstance = null;
+
+// Handle unlock logic
+function toggleEditing() {
+  if (window.isEditingUnlocked) {
+    window.isEditingUnlocked = false;
+    document.getElementById('unlockBtn').textContent = "🔒 Unlock Editing";
+    document.getElementById('unlockBtn').classList.remove('unlocked');
+    render();
+    return;
+  }
+  
+  const pwd = prompt("Enter password to enable editing:");
+  if (pwd === "arsh@2026") {
+    window.isEditingUnlocked = true;
+    document.getElementById('unlockBtn').textContent = "🔓 Editing Enabled";
+    document.getElementById('unlockBtn').classList.add('unlocked');
+    alert("Editing unlocked! Changes to status will now auto-save.");
+    render(); // Re-render UI to show edit dropdowns
+  } else if (pwd !== null) {
+    alert("Incorrect password.");
+  }
+}
+
+// Data updating logic
+window.updateActionStatus = function(krNo, actionId, newStatus) {
+  if (!window.isEditingUnlocked) return;
+  
+  const kr = window.KRS.find(k => k.krNo === krNo);
+  if (kr) {
+    const action = kr.actions.find(a => a.id === actionId);
+    if (action) {
+      action.status = newStatus;
+      
+      // Auto-update parent KR status if all completed
+      const allCompleted = kr.actions.every(a => a.status === 'Completed');
+      if (allCompleted) kr.status = 'Completed';
+      else kr.status = 'In-Progress';
+      
+      window.syncWithDatabase();
+      render();
+      
+      // If modal is open, re-render the modal content specifically
+      if (document.getElementById('modalPanel').style.display === 'flex') {
+        openModal(krNo);
+      }
+    }
+  }
 };
 
-const KRS = [
-  {krNo:'KR 1.1',title:'EVT (Engineering Validation Samples) of SPIN Gen 2.0',target:'2 Samples',weight:0.20,status:'In-Progress',dueDate:'2027-01-31',category:'Product Delivery',actions:[
-    {id:'A-01',title:'Architecture Development (Document Readiness)',status:'In-Progress',weight:0.08,dueDate:'2026-06-01'},
-    {id:'A-02',title:'Design & CFT - A',status:'To be Started',weight:0.15,dueDate:'2026-07-01'},
-    {id:'A-03',title:'Proto Assembly',status:'To be Started',weight:0.15,dueDate:'2026-09-01'},
-    {id:'A-04',title:'Proto Validation',status:'To be Started',weight:0.15,dueDate:'2026-11-01'},
-    {id:'A-05',title:'CFT - B',status:'To be Started',weight:0.15,dueDate:'2026-12-01'},
-    {id:'A-06',title:'System Release',status:'To be Started',weight:0.15,dueDate:'2026-12-01'},
-    {id:'A-07',title:'Field Trial',status:'To be Started',weight:0.10,dueDate:'2027-01-01'},
-  ]},
-  {krNo:'KR 1.2',title:'Upgrade Gen 2.0 to Gen 2.5 across all power categories',target:'2 Samples + System Release',weight:0.10,status:'In-Progress',dueDate:'2026-07-30',category:'Product Delivery',actions:[
-    {id:'A-01',title:'Upgrade point identification',status:'In-Progress',weight:0.08,dueDate:'2026-05-01'},
-    {id:'A-02',title:'Design & CFT - A',status:'To be Started',weight:0.15,dueDate:'2026-06-01'},
-    {id:'A-03',title:'Proto Assembly',status:'To be Started',weight:0.15,dueDate:'2026-05-01'},
-    {id:'A-04',title:'Proto Validation',status:'To be Started',weight:0.15,dueDate:'2026-06-01'},
-    {id:'A-05',title:'CFT - B',status:'To be Started',weight:0.15,dueDate:'2026-06-01'},
-    {id:'A-06',title:'System Release',status:'To be Started',weight:0.15,dueDate:'2026-07-01'},
-    {id:'A-07',title:'Field Trial',status:'To be Started',weight:0.10,dueDate:'2026-07-01'},
-  ]},
-  {krNo:'KR 1.3',title:"Build India's best Gen 3.0 all-in-1 EV charger (120–360kW)",target:'3 Samples',weight:0.25,status:'In-Progress',dueDate:'2026-10-30',category:'Product Delivery',actions:[
-    {id:'A-01',title:'Architecture Development (Document Readiness)',status:'In-Progress',weight:0.08,dueDate:'2026-06-01'},
-    {id:'A-02',title:'Design & CFT - A',status:'To be Started',weight:0.15,dueDate:'2026-06-01'},
-    {id:'A-03',title:'Proto Assembly',status:'To be Started',weight:0.15,dueDate:'2026-07-31'},
-    {id:'A-04',title:'Proto Validation',status:'To be Started',weight:0.15,dueDate:'2026-08-31'},
-    {id:'A-05',title:'CFT - B',status:'To be Started',weight:0.15,dueDate:'2026-08-31'},
-    {id:'A-06',title:'System Release',status:'To be Started',weight:0.15,dueDate:'2026-08-31'},
-    {id:'A-07',title:'Field Trial',status:'To be Started',weight:0.10,dueDate:'2026-10-01'},
-  ]},
-  {krNo:'KR 1.4',title:'480kW Distributed System Release',target:'2 Samples + System Release',weight:0.15,status:'In-Progress',dueDate:'2026-07-31',category:'Product Delivery',actions:[
-    {id:'A-01',title:'Architecture Development (Document Readiness)',status:'Completed',weight:0.15,dueDate:'2026-05-01'},
-    {id:'A-02',title:'Design & CFT - A',status:'Completed',weight:0.15,dueDate:'2026-06-01'},
-    {id:'A-03',title:'Proto Assembly',status:'In-Progress',weight:0.08,dueDate:'2026-06-01'},
-    {id:'A-04',title:'Proto Validation',status:'To be Started',weight:0.15,dueDate:'2026-06-01'},
-    {id:'A-05',title:'CFT - B',status:'To be Started',weight:0.15,dueDate:'2026-07-01'},
-    {id:'A-06',title:'System Release',status:'To be Started',weight:0.15,dueDate:'2026-07-01'},
-    {id:'A-07',title:'Field Trial',status:'To be Started',weight:0.10,dueDate:'2026-07-31'},
-  ]},
-  {krNo:'KR 1.5',title:'BESS EV Charger',target:'2 Samples + System Release',weight:0.05,status:'In-Progress',dueDate:'2026-12-31',category:'Product Delivery',actions:[
-    {id:'A-01',title:'Architecture Development (Document Readiness)',status:'In-Progress',weight:0.08,dueDate:'2026-06-01'},
-    {id:'A-02',title:'Design & CFT - A',status:'To be Started',weight:0.15,dueDate:'2026-07-01'},
-    {id:'A-03',title:'Proto Assembly',status:'To be Started',weight:0.15,dueDate:'2026-09-01'},
-    {id:'A-04',title:'Proto Validation',status:'To be Started',weight:0.15,dueDate:'2026-10-01'},
-    {id:'A-05',title:'CFT - B',status:'To be Started',weight:0.15,dueDate:'2026-11-01'},
-    {id:'A-06',title:'System Release',status:'To be Started',weight:0.15,dueDate:'2026-12-01'},
-    {id:'A-07',title:'Field Trial',status:'To be Started',weight:0.10,dueDate:'2026-12-31'},
-  ]},
-  {krNo:'KR 2.1',title:'Upgrade DC chargers in the field to latest HW/SW/IP issues',target:'50/Month',weight:0.01,status:'In-Progress',dueDate:'2026-05-31',category:'Quality',actions:[
-    {id:'A-01',title:'DC Charger field audit',status:'In-Progress',weight:0.30,dueDate:'2026-05-31'},
-    {id:'A-02',title:'HW/SW upgrade rollout — Batch 1',status:'To be Started',weight:0.40,dueDate:'2026-06-30'},
-    {id:'A-03',title:'Verification & sign-off',status:'To be Started',weight:0.30,dueDate:'2026-07-31'},
-  ]},
-  {krNo:'KR 2.2',title:'Upgrade 15K affected SPIN Air chargers',target:'1500/Month',weight:0.01,status:'In-Progress',dueDate:'2026-05-31',category:'Quality',actions:[
-    {id:'A-01',title:'SPIN Air impacted-unit identification',status:'In-Progress',weight:0.20,dueDate:'2026-05-31'},
-    {id:'A-02',title:'Remote OTA push — Phase 1',status:'To be Started',weight:0.40,dueDate:'2026-06-30'},
-    {id:'A-03',title:'Remote OTA push — Phase 2',status:'To be Started',weight:0.40,dueDate:'2026-07-31'},
-  ]},
-  {krNo:'KR 2.3',title:'Reduce service tickets per installed unit by 20% YoY',target:'−20%/Quarter',weight:0.02,status:'In-Progress',dueDate:'2026-09-30',category:'Quality',actions:[
-    {id:'A-01',title:'Baseline ticket-rate measurement',status:'Completed',weight:0.20,dueDate:'2026-05-15'},
-    {id:'A-02',title:'Root-cause workshop',status:'In-Progress',weight:0.30,dueDate:'2026-06-30'},
-    {id:'A-03',title:'Improvement actions deployment',status:'To be Started',weight:0.50,dueDate:'2026-09-30'},
-  ]},
-  {krNo:'KR 2.4.1',title:'Resolve field issues with documented RCA — Minor',target:'5 Days',weight:0.01,status:'In-Progress',dueDate:'2026-12-31',category:'Quality',actions:[
-    {id:'A-01',title:'RCA template for minor issues',status:'Completed',weight:0.50,dueDate:'2026-05-15'},
-    {id:'A-02',title:'5-day SLA enforcement',status:'In-Progress',weight:0.50,dueDate:'2026-12-31'},
-  ]},
-  {krNo:'KR 2.4.2',title:'Resolve field issues with documented RCA — Major',target:'30 Days',weight:0.01,status:'In-Progress',dueDate:'2026-12-31',category:'Quality',actions:[
-    {id:'A-01',title:'RCA template for major issues',status:'Completed',weight:0.50,dueDate:'2026-05-15'},
-    {id:'A-02',title:'30-day SLA enforcement',status:'In-Progress',weight:0.50,dueDate:'2026-12-31'},
-  ]},
-  {krNo:'KR 2.5.1',title:'Resolve production issues with ICA timelines — Minor',target:'3 Days',weight:0.01,status:'In-Progress',dueDate:'2026-12-31',category:'Quality',actions:[
-    {id:'A-01',title:'ICA minor SOP creation',status:'In-Progress',weight:0.50,dueDate:'2026-06-01'},
-    {id:'A-02',title:'3-day SLA enforcement',status:'To be Started',weight:0.50,dueDate:'2026-12-31'},
-  ]},
-  {krNo:'KR 2.5.2',title:'Resolve production issues with ICA timelines — Major',target:'7 Days',weight:0.01,status:'In-Progress',dueDate:'2026-12-31',category:'Quality',actions:[
-    {id:'A-01',title:'ICA major SOP creation',status:'In-Progress',weight:0.50,dueDate:'2026-06-01'},
-    {id:'A-02',title:'7-day SLA enforcement',status:'To be Started',weight:0.50,dueDate:'2026-12-31'},
-  ]},
-  {krNo:'KR 2.5.3',title:'Resolve production issues with PCA timelines',target:'30 Days',weight:0.01,status:'In-Progress',dueDate:'2026-12-31',category:'Quality',actions:[
-    {id:'A-01',title:'PCA SOP creation',status:'In-Progress',weight:0.50,dueDate:'2026-06-01'},
-    {id:'A-02',title:'30-day SLA enforcement',status:'To be Started',weight:0.50,dueDate:'2026-12-31'},
-  ]},
-  {krNo:'KR 2.6',title:'Sustain fortnightly QA review cadence with factory',target:'100% Attendance',weight:0.01,status:'In-Progress',dueDate:'2027-03-31',category:'Quality',actions:[
-    {id:'A-01',title:'QA review calendar setup',status:'Completed',weight:0.30,dueDate:'2026-05-01'},
-    {id:'A-02',title:'Q1 reviews conduct',status:'In-Progress',weight:0.40,dueDate:'2026-09-30'},
-    {id:'A-03',title:'Q2 reviews conduct',status:'To be Started',weight:0.30,dueDate:'2027-03-31'},
-  ]},
-  {krNo:'KR 3.1',title:'Achieve 3–5% cost reduction through VAVE',target:'5% cost reduction',weight:0.02,status:'In-Progress',dueDate:'2026-05-15',category:'Production Efficiency',actions:[
-    {id:'A-01',title:'VAVE opportunity identification',status:'Completed',weight:0.30,dueDate:'2026-05-01'},
-    {id:'A-02',title:'Supplier negotiation & ECN raise',status:'In-Progress',weight:0.40,dueDate:'2026-05-15'},
-    {id:'A-03',title:'Cost savings validation',status:'To be Started',weight:0.30,dueDate:'2026-06-30'},
-  ]},
-  {krNo:'KR 3.2',title:'Deliver 50 improvement points in assembly + testing for AC & DC Chargers',target:'50 Improvements',weight:0.03,status:'In-Progress',dueDate:'2026-05-30',category:'Production Efficiency',actions:[
-    {id:'A-01',title:'Improvement point identification',status:'In-Progress',weight:0.30,dueDate:'2026-05-15'},
-    {id:'A-02',title:'ECN/Work Instruction creation',status:'To be Started',weight:0.40,dueDate:'2026-05-30'},
-    {id:'A-03',title:'Factory implementation & sign-off',status:'To be Started',weight:0.30,dueDate:'2026-06-30'},
-  ]},
-  {krNo:'KR 3.3',title:'Set up and qualify liquid-cooled module assembly line',target:'OK Samples in Pilot Run',weight:0.03,status:'In-Progress',dueDate:'2026-07-31',category:'Production Efficiency',actions:[
-    {id:'A-01',title:'Jig & fixture design',status:'In-Progress',weight:0.30,dueDate:'2026-06-01'},
-    {id:'A-02',title:'Line setup & trial assembly',status:'To be Started',weight:0.40,dueDate:'2026-07-01'},
-    {id:'A-03',title:'Pilot run qualification & approval',status:'To be Started',weight:0.30,dueDate:'2026-07-31'},
-  ]},
-  {krNo:'KR 3.4',title:'Remote resolution capability',target:'30% remote resolution rate',weight:0.02,status:'In-Progress',dueDate:'2026-12-31',category:'Production Efficiency',actions:[
-    {id:'A-01',title:'Remote diagnostics tool scoping',status:'In-Progress',weight:0.30,dueDate:'2026-08-31'},
-    {id:'A-02',title:'Tool development & integration',status:'To be Started',weight:0.40,dueDate:'2026-11-30'},
-    {id:'A-03',title:'Pilot & scale-up',status:'To be Started',weight:0.30,dueDate:'2026-12-31'},
-  ]},
-  {krNo:'KR 4.1',title:'Implement JIRA for raising tickets to R&D',target:'1 Ticketing System',weight:0.02,status:'In-Progress',dueDate:'2026-05-30',category:'Process',actions:[
-    {id:'A-01',title:'JIRA instance provisioning',status:'Completed',weight:0.30,dueDate:'2026-05-10'},
-    {id:'A-02',title:'Workflow & project configuration',status:'In-Progress',weight:0.40,dueDate:'2026-05-20'},
-    {id:'A-03',title:'User onboarding & training',status:'To be Started',weight:0.30,dueDate:'2026-05-30'},
-  ]},
-  {krNo:'KR 4.2',title:'Transparent view of every major project status',target:'1 Dashboard Live',weight:0.01,status:'In-Progress',dueDate:'2026-05-15',category:'Process',actions:[
-    {id:'A-01',title:'Dashboard design & data model',status:'In-Progress',weight:0.50,dueDate:'2026-05-15'},
-    {id:'A-02',title:'Go-live & stakeholder review',status:'To be Started',weight:0.50,dueDate:'2026-05-30'},
-  ]},
-  {krNo:'KR 4.3',title:'Reduce ECN in new released products within 6 months',target:'−25% ECN',weight:0.02,status:'In-Progress',dueDate:'2026-12-31',category:'Process',actions:[
-    {id:'A-01',title:'ECN baseline measurement',status:'In-Progress',weight:0.30,dueDate:'2026-06-30'},
-    {id:'A-02',title:'Design-quality gate enforcement',status:'To be Started',weight:0.40,dueDate:'2026-09-30'},
-    {id:'A-03',title:'Mid-year ECN review',status:'To be Started',weight:0.30,dueDate:'2026-12-31'},
-  ]},
-];
+function getAllActions(){ return window.KRS.flatMap(kr=>kr.actions.map(a=>({...a,krNo:kr.krNo,krTitle:kr.title,category:kr.category}))); }
+function getKrPct(kr){ const total=kr.actions.reduce((s,a)=>s+a.weight,0); const done=kr.actions.filter(a=>a.status==='Completed').reduce((s,a)=>s+a.weight,0); return total?Math.round((done/total)*100):0; }
+function getStatusCounts(){ const all=getAllActions(); return{completed:all.filter(a=>a.status==='Completed').length,inProgress:all.filter(a=>a.status==='In-Progress').length,toBeStarted:all.filter(a=>a.status==='To be Started').length,total:all.length}; }
+function daysLeft(d){ const today=new Date('2026-05-12'); return Math.ceil((new Date(d)-today)/86400000); }
 
-function getAllActions(){
-  return KRS.flatMap(kr=>kr.actions.map(a=>({...a,krNo:kr.krNo,krTitle:kr.title,category:kr.category})));
-}
-function getKrPct(kr){
-  const total=kr.actions.reduce((s,a)=>s+a.weight,0);
-  const done=kr.actions.filter(a=>a.status==='Completed').reduce((s,a)=>s+a.weight,0);
-  return total?Math.round((done/total)*100):0;
-}
-function getStatusCounts(){
-  const all=getAllActions();
-  return{completed:all.filter(a=>a.status==='Completed').length,inProgress:all.filter(a=>a.status==='In-Progress').length,toBeStarted:all.filter(a=>a.status==='To be Started').length,total:all.length};
-}
-function daysLeft(d){
-  const today=new Date('2026-05-12');
-  return Math.ceil((new Date(d)-today)/86400000);
-}
 function statusBadge(s){
   if(s==='Completed') return '<span class="status-badge sb-completed">Completed</span>';
   if(s==='In-Progress') return '<span class="status-badge sb-inprogress">In-Progress</span>';
   return '<span class="status-badge sb-tobestarted">To be Started</span>';
 }
+
+// Renders either a static badge or an editable dropdown
+function editableStatusBadge(krNo, actionId, currentStatus) {
+  if (!window.isEditingUnlocked) return statusBadge(currentStatus);
+  return `
+    <select class="edit-select" onchange="updateActionStatus('${krNo}', '${actionId}', this.value)">
+      <option value="To be Started" ${currentStatus==='To be Started'?'selected':''}>To be Started</option>
+      <option value="In-Progress" ${currentStatus==='In-Progress'?'selected':''}>In-Progress</option>
+      <option value="Completed" ${currentStatus==='Completed'?'selected':''}>Completed</option>
+    </select>
+  `;
+}
+
 function statusIcon(s){
   if(s==='Completed') return '<span class="action-icon ai-completed">✓</span>';
   if(s==='In-Progress') return '<span class="action-icon ai-inprogress">◑</span>';
   return '<span class="action-icon ai-tobestarted">○</span>';
 }
-function statusColor(s){
-  if(s==='Completed') return '#4ade80';
-  if(s==='In-Progress') return '#fbbf24';
-  return '#818cf8';
-}
-function daysColor(d){
-  if(d<=14) return 'ms-urgent';
-  if(d<=30) return 'ms-warn';
-  return 'ms-ok';
-}
+function statusColor(s){ if(s==='Completed') return '#4ade80'; if(s==='In-Progress') return '#fbbf24'; return '#818cf8'; }
+function daysColor(d){ if(d<=14) return 'ms-urgent'; if(d<=30) return 'ms-warn'; return 'ms-ok'; }
 
-let currentTab='overview';
-let chartInstance=null;
-
-function getFilters(){
-  return{cat:document.getElementById('catFilter').value,status:document.getElementById('statusFilter').value,search:document.getElementById('searchInput').value.toLowerCase()};
-}
+function getFilters(){ return{cat:document.getElementById('catFilter').value,status:document.getElementById('statusFilter').value,search:document.getElementById('searchInput').value.toLowerCase()}; }
 function filterKRs(){
   const{cat,status,search}=getFilters();
-  return KRS.filter(kr=>{
+  return window.KRS.filter(kr=>{
     const mc=cat==='All'||kr.category===cat;
     const ms=status==='All'||kr.status===status;
     const mq=!search||kr.title.toLowerCase().includes(search)||kr.krNo.toLowerCase().includes(search);
@@ -456,7 +480,7 @@ function krCard(kr,wide){
 function renderOverview(){
   const sc=getStatusCounts();
   const today=new Date('2026-05-12');
-  const milestones=KRS.filter(kr=>kr.dueDate&&new Date(kr.dueDate)>=today)
+  const milestones=window.KRS.filter(kr=>kr.dueDate&&new Date(kr.dueDate)>=today)
     .map(kr=>({...kr,dl:daysLeft(kr.dueDate)}))
     .sort((a,b)=>a.dl-b.dl).slice(0,5);
 
@@ -467,13 +491,13 @@ function renderOverview(){
     {name:'Process',color:'#22c55e',weight:5,krs:3},
   ];
 
-  const pdKRs=KRS.filter(kr=>kr.category==='Product Delivery');
+  const pdKRs=window.KRS.filter(kr=>kr.category==='Product Delivery');
 
   return `
   <div class="metric-grid">
     <div class="metric-card mc-cyan">
       <div class="metric-label">Total Key Results</div>
-      <div class="metric-value">${KRS.length}</div>
+      <div class="metric-value">${window.KRS.length}</div>
       <div class="metric-sub">Across 4 categories</div>
     </div>
     <div class="metric-card mc-violet">
@@ -484,7 +508,7 @@ function renderOverview(){
     <div class="metric-card mc-green">
       <div class="metric-label">Actions Completed</div>
       <div class="metric-value">${sc.completed}</div>
-      <div class="metric-sub">${Math.round(sc.completed/sc.total*100)}% done</div>
+      <div class="metric-sub">${sc.total ? Math.round(sc.completed/sc.total*100) : 0}% done</div>
     </div>
     <div class="metric-card mc-amber">
       <div class="metric-label">In-Progress Actions</div>
@@ -499,7 +523,7 @@ function renderOverview(){
       <div class="panel-sub">Distribution across all activities</div>
       <div class="donut-wrap">
         <div class="donut-svg-wrap">
-          <canvas id="donutChart" width="110" height="110" role="img" aria-label="Donut chart: ${sc.completed} completed, ${sc.inProgress} in-progress, ${sc.toBeStarted} to be started">${sc.completed} completed, ${sc.inProgress} in-progress, ${sc.toBeStarted} to be started.</canvas>
+          <canvas id="donutChart" width="110" height="110"></canvas>
           <div class="donut-center"><div class="donut-total">${sc.total}</div><div class="donut-label">Actions</div></div>
         </div>
         <div class="legend-row">
@@ -509,26 +533,11 @@ function renderOverview(){
               <span class="leg-name">${n}</span>
               <span class="leg-val" style="color:${c}">${v}</span>
             </div>
-            <div class="leg-bar"><div class="leg-fill" style="width:${Math.round(v/sc.total*100)}%;background:${c}"></div></div>
+            <div class="leg-bar"><div class="leg-fill" style="width:${sc.total?Math.round(v/sc.total*100):0}%;background:${c}"></div></div>
           </div>`).join('')}
         </div>
       </div>
     </div>
-
-    <div class="panel">
-      <div class="panel-title">Category Breakdown</div>
-      <div class="panel-sub">KR count & weight per focus area</div>
-      <div class="cat-row">
-        ${cats.map(c=>`<div class="cat-item">
-          <div class="cat-top">
-            <div class="cat-left"><span class="cat-dot" style="background:${c.color}"></span>${c.name}</div>
-            <div class="cat-right"><span class="cat-krs">${c.krs} KRs</span><span class="cat-wt" style="color:${c.color}">${c.weight}% wt</span></div>
-          </div>
-          <div class="cat-bar-bg"><div class="cat-bar-fill" style="width:${c.weight}%;background:${c.color};height:4px;border-radius:4px"></div></div>
-        </div>`).join('')}
-      </div>
-    </div>
-
     <div class="panel">
       <div class="panel-title">Upcoming Milestones</div>
       <div class="panel-sub">Next deadlines to watch</div>
@@ -577,7 +586,7 @@ function renderActions(){
           <td class="td-kr">${a.krNo}</td>
           <td class="td-title"><span>${a.id} — ${a.title}</span></td>
           <td class="td-cat">${a.category}</td>
-          <td>${statusBadge(a.status)}</td>
+          <td>${editableStatusBadge(a.krNo, a.id, a.status)}</td>
           <td class="td-date">${a.dueDate}</td>
           <td class="td-wt">${Math.round(a.weight*100)}%</td>
         </tr>`).join('')}
@@ -596,7 +605,7 @@ function renderTimeline(){
     completed:all.filter(a=>a.dueDate.startsWith(mDates[i])&&a.status==='Completed').length
   }));
 
-  const sortedKRs=[...KRS].sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate));
+  const sortedKRs=[...window.KRS].sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate));
 
   return `<div class="chart-panel">
     <div class="panel-title">Monthly Action Timeline</div>
@@ -606,7 +615,7 @@ function renderTimeline(){
       <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:#22c55e;display:inline-block"></span>Completed</span>
     </div>
     <div style="position:relative;width:100%;height:200px">
-      <canvas id="timelineChart" role="img" aria-label="Bar chart showing actions due and completed per month from May 2026 to March 2027">Monthly action counts for FY 2026-27.</canvas>
+      <canvas id="timelineChart"></canvas>
     </div>
     <div id="tlData" style="display:none">${JSON.stringify(data)}</div>
   </div>
@@ -635,7 +644,7 @@ function drawDonut(sc){
       labels:['Completed','In-Progress','To be Started'],
       datasets:[{data:[sc.completed,sc.inProgress,sc.toBeStarted],backgroundColor:['#22c55e','#f59e0b','#6366f1'],borderWidth:0,borderRadius:3,spacing:2}]
     },
-    options:{responsive:false,cutout:'72%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed}`}}}}
+    options:{responsive:false,cutout:'72%',plugins:{legend:{display:false}}}
   });
 }
 
@@ -657,15 +666,15 @@ function drawTimeline(){
     options:{
       responsive:true,maintainAspectRatio:false,
       scales:{
-        x:{ticks:{color:'#475569',font:{size:10}},grid:{display:false},border:{display:false},ticks:{autoSkip:false,maxRotation:0}},
+        x:{ticks:{color:'#475569',font:{size:10}},grid:{display:false},border:{display:false}},
         y:{ticks:{color:'#475569',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'},border:{display:false}}
       },
-      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#94a3b8',borderColor:'rgba(255,255,255,.08)',borderWidth:1}}
+      plugins:{legend:{display:false}}
     }
   });
 }
 
-function render(){
+window.render = function(){
   const c=document.getElementById('mainContent');
   if(chartInstance){chartInstance.destroy();chartInstance=null;}
   if(currentTab==='overview') c.innerHTML=renderOverview();
@@ -677,14 +686,14 @@ function render(){
   if(currentTab==='timeline') setTimeout(()=>drawTimeline(),50);
 }
 
-function setTab(tab,el){
+window.setTab = function(tab,el){
   currentTab=tab;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   render();
 }
 
-function resetFilters(){
+window.resetFilters = function(){
   document.getElementById('catFilter').value='All';
   document.getElementById('statusFilter').value='All';
   document.getElementById('searchInput').value='';
@@ -695,8 +704,8 @@ document.getElementById('catFilter').addEventListener('change',render);
 document.getElementById('statusFilter').addEventListener('change',render);
 document.getElementById('searchInput').addEventListener('input',render);
 
-function openModal(krNo){
-  const kr=KRS.find(k=>k.krNo===krNo);
+window.openModal = function(krNo){
+  const kr=window.KRS.find(k=>k.krNo===krNo);
   if(!kr) return;
   const pct=getKrPct(kr);
   const c=CAT_COLORS[kr.category]||'#94a3b8';
@@ -709,8 +718,8 @@ function openModal(krNo){
   document.getElementById('mKrActions').innerHTML=`
     <div class="modal-actions-label">Actions (${kr.actions.length})</div>
     ${kr.actions.map(a=>`<div class="action-row">
-      ${statusIcon(a.status)}
-      <div class="action-info">
+      ${window.isEditingUnlocked ? editableStatusBadge(kr.krNo, a.id, a.status) : statusIcon(a.status)}
+      <div class="action-info" style="margin-left: 8px;">
         <div class="action-name">${a.id} — ${a.title}</div>
         <div class="action-meta">Due: ${a.dueDate} · Weight: ${Math.round(a.weight*100)}%</div>
       </div>
@@ -719,11 +728,13 @@ function openModal(krNo){
   document.getElementById('modalBackdrop').style.display='block';
   document.getElementById('modalPanel').style.display='flex';
 }
-function closeModal(){
+
+window.closeModal = function(){
   document.getElementById('modalBackdrop').style.display='none';
   document.getElementById('modalPanel').style.display='none';
 }
 
+// Initial render using local fallback array until DB fetches
 render();
 </script>
 </body>
