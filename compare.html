@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OKR Category Comparison</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #07090f; color: #e2e8f0; font-family: 'Inter', system-ui, sans-serif; font-size: 13px; min-height: 100vh; padding: 20px; }
+  
+  .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .title-wrap { display: flex; align-items: center; gap: 12px; }
+  .title { font-size: 18px; font-weight: 700; color: #fff; }
+  .subtitle { color: #64748b; font-size: 12px; }
+  
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .panel { background: #0d1320; border: 1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 20px; }
+  .panel-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 16px; display: flex; justify-content: space-between;}
+  
+  /* Category Bars */
+  .compare-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; margin-top: 16px; }
+  .cat-name { font-size: 12px; font-weight: 600; color: #cbd5e1; }
+  .cat-stats { font-size: 11px; color: #94a3b8; }
+  .cat-pct { font-size: 14px; font-weight: 900; color: #fff; }
+  .bar-bg { height: 8px; border-radius: 8px; background: rgba(255,255,255,.06); overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 8px; transition: width 1s ease; }
+
+  /* Table styling */
+  table { width: 100%; border-collapse: collapse; text-align: left; }
+  th { padding: 10px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; border-bottom: 1px solid rgba(255,255,255,.06); }
+  td { padding: 12px 10px; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,.03); }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  
+  .badge { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+  .status-good { background: rgba(34,197,94,.15); color: #4ade80; }
+  .status-warn { background: rgba(245,158,11,.15); color: #fbbf24; }
+  .status-bad { background: rgba(239,68,68,.15); color: #f87171; }
+
+  .loading { text-align: center; padding: 40px; color: #64748b; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="title-wrap">
+    <div>
+      <div class="title">Cross-Category Comparison</div>
+      <div class="subtitle">Live data pulled from Firebase Realtime Database</div>
+    </div>
+  </div>
+  <a href="index.html" style="color: #22d3ee; text-decoration: none; font-weight: 600;">← Back to Main Tracker</a>
+</div>
+
+<div id="content" class="loading">Connecting to database and calculating metrics...</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  // !!! PASTE YOUR FIREBASE CONFIG HERE !!!
+  const firebaseConfig = {
+    apiKey: "AIzaSyA6WOLm1akTLpkDCMiv3TkAHzIqWFgdGZU",
+    authDomain: "rd-exicom.firebaseapp.com",
+    databaseURL: "https://rd-exicom-default-rtdb.firebaseio.com",
+    projectId: "rd-exicom",
+    storageBucket: "rd-exicom.firebasestorage.app",
+    messagingSenderId: "574307327621",
+    appId: "1:574307327621:web:f33eb2bd2594f8657813ec",
+    measurementId: "G-LG0YNVDMP2"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const dbRef = ref(db, 'okr_data');
+
+  async function loadData() {
+    try {
+      const snapshot = await get(dbRef);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        renderComparison(data.krs);
+      } else {
+        document.getElementById('content').innerHTML = "No data found in database. Please initialize the main tracker first.";
+      }
+    } catch (error) {
+      document.getElementById('content').innerHTML = "Error connecting to database. Check console.";
+      console.error(error);
+    }
+  }
+
+  function getKrProgress(kr) {
+    if (!kr.actions || kr.actions.length === 0) return 0;
+    const totalWeight = kr.actions.reduce((sum, a) => sum + (a.weight || 0), 0);
+    const doneWeight = kr.actions.filter(a => a.status === 'Completed').reduce((sum, a) => sum + (a.weight || 0), 0);
+    return totalWeight === 0 ? 0 : Math.round((doneWeight / totalWeight) * 100);
+  }
+
+  function renderComparison(krs) {
+    // 1. Process Category Data
+    const categories = ['Product Delivery', 'Quality', 'Production Efficiency', 'Process'];
+    const colors = { 'Product Delivery':'#22d3ee', 'Quality':'#a855f7', 'Production Efficiency':'#f59e0b', 'Process':'#22c55e' };
+    
+    const catData = categories.map(cat => {
+      const catKRs = krs.filter(k => k.category === cat);
+      let totalActions = 0;
+      let completedActions = 0;
+      
+      catKRs.forEach(kr => {
+        if(kr.actions) {
+          totalActions += kr.actions.length;
+          completedActions += kr.actions.filter(a => a.status === 'Completed').length;
+        }
+      });
+      
+      const pct = totalActions === 0 ? 0 : Math.round((completedActions / totalActions) * 100);
+      return { cat, totalKRs: catKRs.length, totalActions, completedActions, pct, color: colors[cat] };
+    }).sort((a, b) => b.pct - a.pct); // Sort by highest completion
+
+    // 2. Process Highest/Lowest KRs
+    const krsWithProgress = krs.map(kr => ({
+      ...kr,
+      progress: getKrProgress(kr)
+    }));
+    
+    // Bottom 5 performing KRs (ignoring 100% ones, sorting lowest first)
+    const needsAttention = [...krsWithProgress]
+      .filter(kr => kr.progress < 100)
+      .sort((a, b) => a.progress - b.progress)
+      .slice(0, 5);
+
+    // Build the UI
+    let html = `
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-title">
+            <span>Category Progress Leaderboard</span>
+            <span style="font-size: 11px; font-weight: normal; color: #64748b;">Ranked by Action Completion</span>
+          </div>
+          ${catData.map(c => `
+            <div>
+              <div class="compare-row">
+                <span class="cat-name">${c.cat}</span>
+                <span class="cat-stats">${c.completedActions} / ${c.totalActions} Actions · ${c.totalKRs} KRs</span>
+                <span class="cat-pct" style="color: ${c.color}">${c.pct}%</span>
+              </div>
+              <div class="bar-bg">
+                <div class="bar-fill" style="width: ${c.pct}%; background: ${c.color};"></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">KRs Needing Attention (Lowest Progress)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>KR No.</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Progress</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${needsAttention.map(kr => {
+                let badgeClass = kr.progress < 25 ? 'status-bad' : kr.progress < 50 ? 'status-warn' : 'status-good';
+                return `
+                <tr>
+                  <td style="color: #94a3b8; font-weight: 700;">${kr.krNo}</td>
+                  <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${kr.title}">${kr.title}</td>
+                  <td style="color: ${colors[kr.category] || '#fff'}; font-size: 10px;">${kr.category}</td>
+                  <td><span class="badge ${badgeClass}">${kr.progress}%</span></td>
+                </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('content').innerHTML = html;
+  }
+
+  // Start the process
+  loadData();
+</script>
+</body>
+</html>
